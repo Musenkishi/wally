@@ -1,0 +1,121 @@
+<!--
+  ~ Copyright (C) 2014 Freddie (Musenkishi) Lust-Hed
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="BaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@color/Window.Background</item>
+        <item name="actionModeShareDrawable">@drawable/ic_action_share</item>
+        <item name="windowActionBarOverlay">true</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="actionModeBackground">@color/Actionbar.Saved.Background</item>
+        <item name="actionModeStyle">@style/MyActionMode</item>
+        <item name="actionBarItemBackground">@drawable/default_selector</item>
+        <item name="selectableItemBackground">@drawable/default_selector</item>
+        <item name="colorPrimary">@color/Matted.Blue</item>
+        <item name="colorAccent">@color/Matted.Blue.Light</item>
+    </style>
+
+    <style name="AppTheme" parent="BaseTheme">
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="DetailsTheme" parent="BaseTheme">
+        <!-- Customize your theme here. -->
+    </style>
+
+    <!-- ActionBar styles -->
+    <style name="MyActionBar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:displayOptions">showHome|useLogo</item>
+        <item name="android:titleTextStyle">@style/MyActionBar.TitleTextStyle</item>
+    </style>
+
+    <style name="MyActionBar.TitleTextStyle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/White</item>
+    </style>
+
+    <!-- ActionMode Style -->
+    <style name="MyActionMode" parent="Widget.AppCompat.ActionMode">
+        <item name="height">@dimen/app_bar_height</item>
+    </style>
+
+    <style name="ProgressBar" />
+
+    <style name="ProgressBar.Custom" />
+
+    <style name="ProgressBar.Custom.Download">
+        <item name="android:interpolator">@android:interpolator/anticipate_overshoot</item>
+        <item name="android:indeterminateDuration">@integer/custom_progressbar_animation_duration</item>
+        <item name="android:indeterminateDrawable">@drawable/custom_progress_circle</item>
+        <item name="android:layout_margin">@dimen/default_gap</item>
+    </style>
+
+    <style name="ProgressBar.Custom.Download.Light">
+        <item name="android:indeterminateDrawable">@drawable/custom_progress_circle_light</item>
+    </style>
+
+    <style name="CustomOverflow" parent="@android:style/Widget.Holo.ActionButton.Overflow">
+        <item name="android:src">@drawable/ic_action_overflow</item>
+        <item name="android:background">@drawable/default_selector</item>
+    </style>
+
+    <style name="Button"/>
+    <style name="Button.Dialog">
+        <item name="android:background">@drawable/default_selector</item>
+    </style>
+    <style name="Button.Material"/>
+    <style name="Button.Material.Flat">
+        <item name="android:background">@drawable/default_selector</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textAppearance">@android:style/TextAppearance.Holo.Widget.Button</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:paddingLeft">@dimen/default_gap</item>
+        <item name="android:paddingRight">@dimen/default_gap</item>
+    </style>
+
+    <style name="Material"/>
+    <style name="Material.Header"/>
+    <style name="Material.Header.SubHeader">
+        <item name="android:layout_height">@dimen/material_list_subheader_height</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:paddingLeft">@dimen/default_gap</item>
+        <item name="android:paddingRight">@dimen/default_gap</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_gravity">start|center_vertical</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="ColorPickerTitle">
+        <item name="android:layout_height">0dp</item>
+    </style>
+
+    <style name="ColorPickerScrollView">
+        <item name="android:paddingLeft">24dp</item>
+        <item name="android:paddingRight">24dp</item>
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:paddingBottom">0dp</item>
+    </style>
+
+    <style
+        name="dialog_animation_fade" >
+        <item name="android:windowEnterAnimation">@anim/fade_in_instant</item>
+        <item name="android:windowExitAnimation">@anim/fade_out_instant</item>
+    </style>
+
+</resources>

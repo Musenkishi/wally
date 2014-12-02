@@ -1,0 +1,102 @@
+<!--
+  ~ Copyright (C) 2014 Freddie (Musenkishi) Lust-Hed
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:orientation="vertical">
+
+    <uk.co.senab.photoview.PhotoView
+        android:id="@+id/image_zoom_photoview"
+        android:background="@color/Transparent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <ProgressBar
+        android:id="@+id/zoom_loader"
+        android:layout_width="@dimen/default_press_size"
+        android:layout_height="@dimen/default_press_size"
+        android:layout_gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:visibility="gone"
+        style="@style/ProgressBar.Custom.Download.Light"/>
+
+    <LinearLayout
+        android:id="@+id/zoom_toolbar"
+        android:visibility="gone"
+        android:background="@color/Black.Transparent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/default_gap"
+        android:paddingRight="@dimen/default_gap"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center_horizontal">
+
+            <Button
+                android:id="@+id/toolbar_set_as"
+                style="@style/Button.Material.Flat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_action_set_as_light"
+                android:drawablePadding="8dp"
+                android:paddingRight="8dp"
+                android:text="@string/action_set_as"
+                android:textColor="@color/White"
+                />
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="32dp"
+            android:layout_margin="4dp"
+            android:layout_gravity="center_vertical"
+            android:background="@color/Grey.Transparent"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center_horizontal">
+
+            <Button
+                android:id="@+id/toolbar_delete"
+                style="@style/Button.Material.Flat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_action_trash"
+                android:drawablePadding="8dp"
+                android:paddingRight="8dp"
+                android:text="@string/delete"
+                android:textColor="@color/Grey.Light"
+                />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</RelativeLayout>

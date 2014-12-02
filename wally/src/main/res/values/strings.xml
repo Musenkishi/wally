@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2014 Freddie (Musenkishi) Lust-Hed
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<resources>
+
+    <string name="app_name">Wally</string>
+    <string name="title_section_toplist">Top</string>
+    <string name="title_section_search">Search</string>
+    <string name="title_section_random">Random</string>
+    <string name="title_section_saved">Saved</string>
+    <string name="title_section_latest">New</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_filter">Filter</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_set_as">Set as</string>
+    <string name="action_share">Share</string>
+    <string name="action_save">Save</string>
+    <string name="action_open">Open in browser</string>
+
+    <string name="notification_title_image_saved">Image saved.</string>
+    <string name="notification_ticker_image_saved">Image has been saved!</string>
+    <string name="notification_title_image_saving">Saving image…</string>
+    <string name="notification_ticker_image_saving">Saving image to external storage…</string>
+    <string name="notification_title_image_download">Wallpaper download</string>
+
+    <string name="toast_error_file_save">Something went wrong while saving.</string>
+    <string name="toast_info_file_already_saved">This image is already saved.</string>
+    <string name="toast_error_default">Something went wrong</string>
+    <string name="toast_image_saved_to_sdcard">Image has been saved on sdcard.</string>
+
+    <string name="content_desc_image_details_button_set_wallpaper">Set image as wallpaper</string>
+    <string name="content_desc_image_details_button_share">Share this image</string>
+    <string name="content_desc_image_details_button_save">Save this image</string>
+    <string name="content_desc_image_details_button_open">Open image</string>
+    <string name="image_details_image_desc">Wallpaper</string>
+    <string name="image_details_button_fullscreen">Fullscreen</string>
+    <string name="image_details_placeholder">This is a placeholder. In a later release, this space will contain tags!</string>
+    <string name="image_details_uploaded_by">Uploader</string>
+    <string name="image_details_source_title">Source</string>
+    <string name="image_details_specs_title">Details</string>
+    <string name="image_details_specs_dimensions_title">Dimensions</string>
+    <string name="image_details_specs_category_title">Category</string>
+    <string name="image_details_tags_title">Tags</string>
+    <string name="image_details_specs_rating_title">Rating</string>
+    <string name="fragment_images_title">Toplist</string>
+    <string name="saved">Saved</string>
+    <string name="search">Search…</string>
+    <string name="delete">Delete</string>
+
+    <string name="dialog_delete_title">Delete %s?</string>
+    <string name="dialog_delete_positive">Delete</string>
+    <string name="dialog_delete_negative">Cancel</string>
+    <string name="dialog_crashlogging_negative">No thanks</string>
+    <string name="dialog_crashlogging_positive">Yes, I\'m in</string>
+    <string name="dialog_crashlogging_title">Enable automatic crash reporting</string>
+    <string name="dialog_crashlogging_message">To improve stability, this app can automatically send crashes using Crashlytics. You are free to participate if you want to by pressing \"Yes, I\'m in\".\nEither way you won\'t be asked again.</string>
+    <string name="saving">Saving…</string>
+
+    <string name="error_backend_message_text">Something went wrong while fetching the images. Try again?</string>
+    <string name="error_backend_message_text_link">Try again?</string>
+    <string name="licenses">Licenses</string>
+    <string name="only_hex_chars">Try hexadecimals! (0–9 and A–F)</string>
+
+    <!-- Muzei extension strings -->
+    <string name="source_name">Wally</string>
+    <string name="source_description">Wallpapers from Wally Toplist</string>
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+    <string name="submit">Submit</string>
+    <string name="dialog_custom_resolution_title">Set custom resolution</string>
+    <string name="error_backend_check_backend">Check if Wallhaven is working?</string>
+    <string name="you_must_have_at_least_one_category_checked">You must have at least one category checked</string>
+    <string name="you_must_have_at_least_one_rating_checked">You must have at least one rating checked</string>
+
+</resources>

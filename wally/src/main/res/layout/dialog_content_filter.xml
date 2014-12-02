@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ Copyright (C) 2014 Freddie (Musenkishi) Lust-Hed
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:scrollbars="vertical"
+    android:scrollbarAlwaysDrawVerticalTrack="true"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:weightSum="1.0"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/filter_layout_boards"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:id="@+id/filter_title_categories"
+                style="@style/Material.Header.SubHeader"
+                android:textColor="@color/Filter.Section.Title"
+                android:text="Categories"/>
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="General"
+                android:id="@+id/filter_boards_general"/>
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Anime"
+                android:id="@+id/filter_boards_anime"/>
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="People"
+                android:id="@+id/filter_boards_high_resolution"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/filter_layout_maturity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:id="@+id/filter_title_rating"
+                style="@style/Material.Header.SubHeader"
+                android:textColor="@color/Filter.Section.Title"
+                android:text="Rating"/>
+
+            <CheckBox
+                android:id="@+id/filter_purity_sfw"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SFW"/>
+
+            <CheckBox
+                android:id="@+id/filter_purity_sketchy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sketchy"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1.0"
+        android:gravity="center_vertical">
+
+        <LinearLayout
+            android:id="@+id/filter_layout_ratio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.6"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:id="@+id/filter_title_aspect_ratio"
+                style="@style/Material.Header.SubHeader"
+                android:textColor="@color/Filter.Section.Title"
+                android:text="Aspect Ratio"/>
+
+
+            <Spinner
+                android:id="@+id/filter_aspect_ratio_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Widget.AppCompat.Light.DropDownItem.Spinner"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/filter_layout_resolution"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="0.4"
+            >
+
+            <TextView
+                android:id="@+id/filter_title_resolution"
+                style="@style/Material.Header.SubHeader"
+                android:textColor="@color/Filter.Section.Title"
+                android:text="Resolution"/>
+
+
+            <Spinner
+                android:id="@+id/filter_resolution_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>

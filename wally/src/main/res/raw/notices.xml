@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ Copyright (C) 2014 Freddie (Musenkishi) Lust-Hed
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<notices>
+    <notice>
+        <name>PhotoView</name>
+        <url>https://github.com/chrisbanes/PhotoView</url>
+        <copyright>Copyright 2011, 2012 Chris Banes</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <notice>
+        <name>BlurEffect</name>
+        <url>https://github.com/PomepuyN/BlurEffectForAndroidDesign</url>
+        <copyright/>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <notice>
+        <name>ColorPickerView</name>
+        <url>https://code.google.com/p/color-picker-view</url>
+        <copyright/>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <notice>
+        <name>TabBarView</name>
+        <url>https://plus.google.com/118417777153109946393/posts/Jz7mBBuDoNk</url>
+        <copyright>Cyril Mottier 2014</copyright>
+    </notice>
+    <notice>
+        <name>Float Labeled EditText</name>
+        <url>https://github.com/wrapp/floatlabelededittext</url>
+        <copyright>Copyright (c) 2012 Bohemian Wrappsody AB</copyright>
+        <license>MIT License</license>
+    </notice>
+    <notice>
+        <name>Android AutoParcel</name>
+        <url>https://github.com/frankiesardo/auto-parcel</url>
+        <copyright>Copyright 2014 Frankie Sardo Copyright 2013 Google, Inc.</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <notice>
+        <name>Android Support Library</name>
+        <url>https://developer.android.com/tools/support-library/</url>
+        <copyright>Copyright (C) 2014 The Android Open Source Project</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <notice>
+        <name>LicensesDialog</name>
+        <url>https://github.com/PSDev/LicensesDialog</url>
+        <copyright>Copyright 2013 Philip Schiffer</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <notice>
+        <name>Glide</name>
+        <url>https://github.com/bumptech/glide/</url>
+        <copyright>Copyright 2014 Google, Inc</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <notice>
+        <name>OkHttp</name>
+        <url>https://square.github.io/okhttp/</url>
+        <copyright>Copyright 2014 Square, Inc.</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <notice>
+        <name>jsoup: Java HTML Parser</name>
+        <url>http://jsoup.org/</url>
+        <copyright>Copyright (c) 2009, 2010, 2011, 2012, 2013 Jonathan Hedley</copyright>
+        <license>MIT License</license>
+    </notice>
+    <notice>
+        <name>Apache Commons Collection</name>
+        <url>https://commons.apache.org/proper/commons-collections/</url>
+        <copyright>Copyright 2002-2012 The Apache Software Foundation</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <notice>
+        <name>Apache Commons IO</name>
+        <url>http://commons.apache.org/io/</url>
+        <copyright>Copyright 2002-2012 The Apache Software Foundation</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+</notices>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ Copyright (C) 2014 Freddie (Musenkishi) Lust-Hed
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<android.support.v7.widget.CardView
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
+    custom:cardElevation="6dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="300dp"
+        android:orientation="vertical"
+        android:layout_gravity="center_horizontal"
+        android:layoutMode="opticalBounds">
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            android:paddingBottom="24dp"
+            android:layout_weight="1"
+            >
+
+            <TextView
+                android:id="@+id/dialog_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/Black.Light"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:lineSpacingMultiplier="1.2"
+                android:paddingTop="24dp"
+                />
+
+            <ScrollView
+                android:id="@+id/dialog_scrollview"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:paddingTop="24dp"
+                >
+
+                <ViewStub
+                    android:id="@+id/dialog_viewstub"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+
+            </ScrollView>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/dialog_buttons_layout"
+            android:layout_width="match_parent"
+            android:layout_height="68dp"
+            android:layout_weight="0"
+            android:padding="@dimen/default_gap"
+            android:orientation="horizontal"
+            android:gravity="center_vertical|end">
+
+            <Button
+                android:id="@+id/dialog_button_negative"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/button_material_flat_height"
+                android:text="@string/cancel"
+                android:textColor="@color/Dialog.Button.Negative"
+                style="@style/Button.Material.Flat"/>
+
+            <Button
+                android:id="@+id/dialog_button_positive"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/button_material_flat_height"
+                android:text="@string/ok"
+                android:textColor="@color/Dialog.Button.Positive"
+                style="@style/Button.Material.Flat"/>
+        </LinearLayout>
+    </LinearLayout>
+</android.support.v7.widget.CardView>
+
+

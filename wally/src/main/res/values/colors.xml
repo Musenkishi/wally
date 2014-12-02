@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2014 Freddie (Musenkishi) Lust-Hed
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<resources>
+
+    <color name="Transparent">#0fff</color>
+    <color name="Transparent.Almost">#11000000</color>
+    <color name="White">#FFFFFFFF</color>
+    <color name="Grey">#ccc</color>
+    <color name="Grey.Dark">#aaa</color>
+    <color name="Grey.Light">#eee</color>
+    <color name="Grey.Transparent">#cccc</color>
+    <color name="Grey.Transparent.Shadow">#4ccc</color>
+    <color name="Black">#000</color>
+    <color name="Black.Light.Transparent">#c333</color>
+    <color name="Black.Light">#333</color>
+    <color name="Black.Transparent">#cc000000</color>
+    <color name="Black.Transparent.Extra">#88000000</color>
+    <color name="Black.Transparent.Shadow">#3000</color>
+    <color name="BlueGrey.Transparent">#cc263238</color>
+    <color name="Blue.Dark.Transparent">#cc2a36b1</color>
+    <color name="Red.Dark.Transparent">#ccb0120a</color>
+    <color name="Purple.Dark.Transparent">#cc47228c</color>
+    <color name="Orange.Dark.Transparent">#ccd84315</color>
+
+    <color name="Orange.Dark">#d84315</color>
+    <color name="BlueGrey">#263238</color>
+    <color name="Blue.Dark">#2a36b1</color>
+    <color name="Red.Dark">#b0120a</color>
+
+    <color name="Red.Dark.Light">#bc3e38</color>
+    <color name="Blue.Dark.Light">#515bbd</color>
+    <color name="Orange.Dark.Light">#dc6540</color>
+    <color name="BlueGrey.Light">#4e585c</color>
+
+    <color name="Matted.Orange">#bd612f</color>
+    <color name="Matted.Blue">#3e4f5c</color>
+    <color name="Matted.Violet">#4b559f</color>
+    <color name="Matted.Red">#9f342f</color>
+    <color name="Matted.Green">#ff41813b</color>
+
+    <color name="Matted.Blue.Light">#586876</color>
+
+    <color name="Holo.Red.Light">#FF4444</color>
+    <color name="Holo.Red.Dark">#CC0000</color>
+    <color name="Holo.Yellow.Light">#FFBB33</color>
+    <color name="Holo.Yellow.Dark">#FF8800</color>
+    <color name="Holo.Green.Light">#99CC00</color>
+    <color name="Holo.Green.Dark">#669900</color>
+    <color name="Holo.Purple.Light">#AA66CC</color>
+    <color name="Holo.Purple.Dark">#9933CC</color>
+    <color name="Holo.Blue.Light">#33B5E5</color>
+    <color name="Holo.Blue.Dark">#0099CC</color>
+    
+    <color name="Material.Blue.500">#03a9f4</color>
+
+    <color name="Pressed.Default">#5ccc</color>
+    <color name="Focused.Default">#5fff</color>
+
+    <color name="Window.Background">@color/Black.Light</color>
+    <color name="Thumb.Background">@color/BlueGrey.Light</color>
+    <color name="Thumb.Text">@color/Grey.Dark</color>
+    <color name="Actionbar.Background">@color/Matted.Blue</color>
+    <color name="Actionbar.TopList.Background">@color/Matted.Blue</color>
+    <color name="Actionbar.Search.Background">@color/Matted.Violet</color>
+    <color name="Actionbar.Random.Background">@color/Matted.Orange</color>
+    <color name="Actionbar.Saved.Background">@color/Red.Dark.Light</color>
+    <color name="Actionbar.Latest.Background">@color/Matted.Green</color>
+    <color name="Filter.Section.Title">#78909c</color>
+    <color name="Dialog.Button.Positive">#78909c</color>
+    <color name="Dialog.Button.Negative">@color/Black.Light</color>
+    <color name="Dialog.Button.Delete">#e51c23</color>
+
+</resources>

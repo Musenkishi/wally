@@ -1,0 +1,135 @@
+/*
+ * Copyright (C) 2014 Freddie (Musenkishi) Lust-Hed
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+buildscript {
+    repositories {
+        maven { url 'http://download.crashlytics.com/maven' }
+    }
+
+    dependencies {
+        classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.+'
+    }
+}
+apply plugin: 'com.android.application'
+apply plugin: 'crashlytics'
+
+repositories {
+    maven { url 'http://download.crashlytics.com/maven' }
+}
+
+
+android {
+    lintOptions{
+        checkReleaseBuilds false
+    }
+    /**
+     * directories that gradle will ignore when looking for changes
+     */
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES.txt'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/dependencies.txt'
+        exclude 'META-INF/LGPL2.1'
+    }
+    compileSdkVersion 21
+    buildToolsVersion '21.0.1'
+    def Properties versionProps = new Properties()
+    versionProps.load(new FileInputStream(file('version.properties')))
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 21
+        versionName versionProps['name']
+        versionCode versionProps['code'].toInteger()
+    }
+    /**
+    Look at Roman Nurik's build.gradle. Lots of good stuff there regarding builds:
+    https://github.com/romannurik/muzei/blob/master/main/build.gradle
+     */
+    signingConfigs {
+        release {
+            def Properties localProps = new Properties()
+            localProps.load(new FileInputStream(file('../../local.properties')))
+            def Properties keyProps = new Properties()
+            assert localProps['keystore.props.file'];
+            keyProps.load(new FileInputStream(file(localProps['keystore.props.file'])))
+            storeFile file(keyProps["store"])
+            keyAlias keyProps["alias"]
+            storePassword keyProps["storePass"]
+            keyPassword keyProps["pass"]
+        }
+        debug {
+            keyAlias 'musenkishi'
+            keyPassword 'wallydebug'
+            storeFile file('../wally_debug_keystore.jks')
+            storePassword 'wallydebug'
+        }
+    }
+    buildTypes {
+        release {
+            runProguard true
+            proguardFiles 'proguard-project.txt'
+            signingConfig signingConfigs.release
+        }
+        publicBeta.initWith(buildTypes.release)
+        publicBeta {
+            zipAlign true
+            runProguard true
+            proguardFiles 'proguard-project.txt'
+            versionNameSuffix " " + versionProps['betaNumber']
+        }
+        publicAlpha.initWith(buildTypes.release)
+        publicAlpha {
+            zipAlign true
+            runProguard true
+            proguardFiles 'proguard-project.txt'
+            versionNameSuffix " " + versionProps['alphaNumber']
+        }
+        debug {
+            debuggable true
+            runProguard false
+            proguardFiles 'proguard-project.txt'
+            versionNameSuffix ' Debug'
+            signingConfig signingConfigs.debug
+        }
+    }
+    productFlavors {
+    }
+}
+
+dependencies {
+    compile 'com.android.support:support-annotations:21.0.0'
+    compile 'org.apache.commons:commons-collections4:4.0'
+    compile 'com.android.support:support-v4:21.0.0'
+    compile 'com.android.support:palette-v7:21.0.0'
+    compile 'com.android.support:recyclerview-v7:21.0.0'
+    compile 'com.android.support:cardview-v7:21.0.0'
+    compile "com.android.support:appcompat-v7:21.0.0"
+    compile 'com.github.chrisbanes.photoview:library:1.2.3'
+    compile('de.psdev.licensesdialog:licensesdialog:+') {
+        exclude module: 'support-v4'
+    }
+    compile fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
+    compile project(':dataprovider')
+    compile 'com.crashlytics.android:crashlytics:1.1.13'
+    compile 'com.google.android.apps.muzei:muzei-api:1.0'
+    compile 'com.wrapp.floatlabelededittext:library:0.0.3'
+}

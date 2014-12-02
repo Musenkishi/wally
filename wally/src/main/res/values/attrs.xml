@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2014 Freddie (Musenkishi) Lust-Hed
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<resources>
+    <declare-styleable name="AutoGridView">
+        <attr name="defaultCellWidth" format="dimension"/>
+    </declare-styleable>
+
+    <declare-styleable name="TabBarView">
+        <attr name="tabBarColor" format="color"/>
+        <attr name="tabBarSize" format="dimension"/>
+    </declare-styleable>
+
+    <declare-styleable name="TabView">
+        <attr name="src" format="reference"/>
+        <attr name="text" format="string"/>
+    </declare-styleable>
+
+    <declare-styleable name="ColorPickerPreference">
+        <attr name="showDialogTitle" format="boolean|reference" />
+        <attr name="showSelectedColorInList" format="boolean|reference" />
+    </declare-styleable>
+
+    <declare-styleable name="ColorPickerView">
+        <attr name="alphaChannelVisible" format="boolean|reference"/>
+        <attr name="alphaChannelText" format="string|reference" />
+        <attr name="colorPickerSliderColor" format="color|reference" />
+        <attr name="colorPickerBorderColor" format="color|reference" />
+    </declare-styleable>
+
+    <declare-styleable name="SwipeClearLayout">
+        <attr name="circleTopMargin" format="dimension"/>
+        <attr name="circleColor" format="color"/>
+        <attr name="duration" format="integer"/>
+    </declare-styleable>
+
+</resources>
