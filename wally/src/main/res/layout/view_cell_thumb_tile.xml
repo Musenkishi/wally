@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ Copyright (C) 2014 Freddie (Musenkishi) Lust-Hed
+  ~ Copyright (C) 2014 Evelio Tarazona Caceres
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -15,62 +16,54 @@
   ~ limitations under the License.
   -->
 
-<RelativeLayout
+<com.musenkishi.wally.views.OverlayLinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:auto="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:descendantFocusability="blocksDescendants"
     android:layout_height="@dimen/thumb_cell_height"
-    android:padding="2dp">
+    android:padding="2dp"
+    android:background="@color/Thumb.Background"
+    auto:overlay="@drawable/default_selector"
+    android:descendantFocusability="blocksDescendants"
+    android:orientation="vertical">
 
-    <FrameLayout
-        android:layout_height="match_parent"
+    <ImageView
+        android:id="@+id/thumb_image_view"
         android:layout_width="match_parent"
-        android:foreground="@drawable/default_selector">
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:scaleType="centerCrop" />
 
-        <LinearLayout
+    <RelativeLayout
+        android:id="@+id/thumb_bottom_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/default_height"
+        android:gravity="center_vertical"
+        android:animateLayoutChanges="true">
+
+        <TextView
+            android:id="@+id/thumb_text_resolution"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_width="match_parent"
-            android:background="@color/Thumb.Background"
-            android:orientation="vertical">
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/default_gap"
+            android:paddingRight="@dimen/default_gap"
+            android:fontFamily="sans-serif"
+            android:textColor="@color/Thumb.Text"
+            android:textSize="14sp"
+            />
 
-            <ImageView
-                android:id="@+id/thumb_image_view"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="2"
-                android:scaleType="centerCrop" />
+        <ImageButton
+            android:id="@+id/thumb_button_heart"
+            android:layout_width="@dimen/default_press_size"
+            android:layout_height="@dimen/default_press_size"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_action_heart_empty"
+            android:background="?heartBackground"
+            />
 
-            <RelativeLayout
-                android:id="@+id/thumb_bottom_view"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/default_height"
-                android:gravity="center_vertical"
-                android:animateLayoutChanges="true">
+    </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/thumb_text_resolution"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center_vertical"
-                    android:paddingLeft="@dimen/default_gap"
-                    android:paddingRight="@dimen/default_gap"
-                    android:fontFamily="sans-serif"
-                    android:textColor="@color/Thumb.Text"
-                    android:textSize="14sp"
-                    />
-
-                <ImageButton
-                    android:id="@+id/thumb_button_heart"
-                    android:layout_width="@dimen/default_press_size"
-                    android:layout_height="@dimen/default_press_size"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/ic_action_heart_empty"
-                    android:background="@drawable/default_selector" />
-
-            </RelativeLayout>
-
-        </LinearLayout>
-    </FrameLayout>
-</RelativeLayout>
+</com.musenkishi.wally.views.OverlayLinearLayout>

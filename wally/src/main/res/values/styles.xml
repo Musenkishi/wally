@@ -28,6 +28,7 @@
         <item name="selectableItemBackground">@drawable/default_selector</item>
         <item name="colorPrimary">@color/Matted.Blue</item>
         <item name="colorAccent">@color/Matted.Blue.Light</item>
+        <item name="heartBackground">@drawable/default_selector</item>
     </style>
 
     <style name="AppTheme" parent="BaseTheme">

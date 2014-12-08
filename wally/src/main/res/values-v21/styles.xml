@@ -20,6 +20,7 @@
         <item name="android:windowTranslucentStatus">false</item>
         <item name="android:windowTranslucentNavigation">false</item>
         <item name="android:statusBarColor">@color/Transparent</item>
+        <item name="heartBackground">?android:attr/selectableItemBackgroundBorderless</item>
     </style>
 
     <style name="DetailsTheme" parent="BaseTheme">
