@@ -16,6 +16,5 @@
   ~ limitations under the License.
   -->
 <resources>
-  <drawable name="background_heart">?attr/selectableItemBackgroundBorderless</drawable>
   <drawable name="overlay_check">@drawable/default_selector_check</drawable>
 </resources>
