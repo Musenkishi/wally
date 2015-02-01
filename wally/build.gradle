@@ -51,7 +51,7 @@ android {
         exclude 'META-INF/LGPL2.1'
     }
     compileSdkVersion 21
-    buildToolsVersion '21.0.1'
+    buildToolsVersion '21.1.2'
     def Properties versionProps = new Properties()
     versionProps.load(new FileInputStream(file('version.properties')))
     defaultConfig {
@@ -85,27 +85,27 @@ android {
     }
     buildTypes {
         release {
-            runProguard true
+            minifyEnabled true
             proguardFiles 'proguard-project.txt'
             signingConfig signingConfigs.release
         }
         publicBeta.initWith(buildTypes.release)
         publicBeta {
-            zipAlign true
-            runProguard true
+            zipAlignEnabled true
+            minifyEnabled true
             proguardFiles 'proguard-project.txt'
             versionNameSuffix " " + versionProps['betaNumber']
         }
         publicAlpha.initWith(buildTypes.release)
         publicAlpha {
-            zipAlign true
-            runProguard true
+            zipAlignEnabled true
+            minifyEnabled true
             proguardFiles 'proguard-project.txt'
             versionNameSuffix " " + versionProps['alphaNumber']
         }
         debug {
             debuggable true
-            runProguard false
+            minifyEnabled false
             proguardFiles 'proguard-project.txt'
             versionNameSuffix ' Debug'
             signingConfig signingConfigs.debug
@@ -118,11 +118,11 @@ android {
 dependencies {
     compile 'com.android.support:support-annotations:21.0.0'
     compile 'org.apache.commons:commons-collections4:4.0'
-    compile 'com.android.support:support-v4:21.0.0'
+    compile 'com.android.support:support-v4:21.0.3'
     compile 'com.android.support:palette-v7:21.0.0'
     compile 'com.android.support:recyclerview-v7:21.0.0'
     compile 'com.android.support:cardview-v7:21.0.0'
-    compile "com.android.support:appcompat-v7:21.0.0"
+    compile "com.android.support:appcompat-v7:21.0.3"
     compile 'com.github.chrisbanes.photoview:library:1.2.3'
     compile('de.psdev.licensesdialog:licensesdialog:+') {
         exclude module: 'support-v4'

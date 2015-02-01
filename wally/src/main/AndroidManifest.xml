@@ -27,9 +27,6 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
-    <uses-sdk
-        tools:node="replace" />
-
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"

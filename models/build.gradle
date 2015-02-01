@@ -19,7 +19,7 @@ apply plugin: 'android-apt'
 
 android {
     compileSdkVersion 21
-    buildToolsVersion '21.0.1'
+    buildToolsVersion '21.1.2'
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 20
@@ -28,7 +28,7 @@ android {
     }
     buildTypes {
         release {
-            runProguard false
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
