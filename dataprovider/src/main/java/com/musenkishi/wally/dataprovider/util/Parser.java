@@ -148,7 +148,7 @@ public class Parser {
             reportCrash(sourceMatch, e);
         }
 
-        Element imageUrlElement = document.select("div#showcase img#wallpaper").first();
+        Element imageUrlElement = document.select("section#showcase img#wallpaper").first();
         String resolution = "0 x 0";
         Uri imagePath = Uri.EMPTY;
         if (imageUrlElement != null) {
