@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ Copyright (C) 2014 Freddie (Musenkishi) Lust-Hed
+  ~ Copyright (C) 2014 Evelio Tarazona Caceres
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -16,6 +17,8 @@
   -->
 
 <resources>
+    <attr name="heartBackground" format="reference" />
+
     <declare-styleable name="AutoGridView">
         <attr name="defaultCellWidth" format="dimension"/>
     </declare-styleable>
@@ -48,4 +51,7 @@
         <attr name="duration" format="integer"/>
     </declare-styleable>
 
+    <declare-styleable name="OverlayLinearLayout">
+      <attr name="overlay" format="reference" />
+    </declare-styleable>
 </resources>
