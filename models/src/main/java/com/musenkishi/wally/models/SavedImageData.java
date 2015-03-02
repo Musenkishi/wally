@@ -18,7 +18,6 @@ package com.musenkishi.wally.models;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Parcel;
 import android.os.Parcelable;
 
 import auto.parcel.AutoParcel;

@@ -20,13 +20,10 @@ import android.net.Uri;
 
 import com.musenkishi.wally.dataprovider.models.DataProviderError;
 import com.musenkishi.wally.models.filters.FilterAspectRatioKeys;
-import com.musenkishi.wally.models.filters.FilterBoards;
 import com.musenkishi.wally.models.filters.FilterBoardsKeys;
 import com.musenkishi.wally.models.filters.FilterGroupsStructure;
 import com.musenkishi.wally.models.filters.FilterPurityKeys;
-import com.musenkishi.wally.models.filters.FilterResOptKeys;
 import com.musenkishi.wally.models.filters.FilterResolutionKeys;
-import com.musenkishi.wally.models.filters.FilterTimeSpanKeys;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;

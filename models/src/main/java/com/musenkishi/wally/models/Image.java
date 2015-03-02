@@ -17,9 +17,7 @@
 package com.musenkishi.wally.models;
 
 import android.net.Uri;
-import android.os.Parcel;
 import android.os.Parcelable;
-import android.text.TextUtils;
 
 import auto.parcel.AutoParcel;
 

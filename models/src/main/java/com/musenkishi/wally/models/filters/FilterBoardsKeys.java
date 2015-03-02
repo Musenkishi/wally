@@ -16,11 +16,6 @@
 
 package com.musenkishi.wally.models.filters;
 
-import com.musenkishi.wally.models.Filter;
-
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Final class containing all values needed for the boards filter.
  * Created by Musenkishi on 2014-03-14 20:20.
