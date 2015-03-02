@@ -33,7 +33,7 @@ import com.musenkishi.wally.adapters.SmartFragmentPagerAdapter;
 import com.musenkishi.wally.base.BaseActivity;
 import com.musenkishi.wally.base.BaseFragment;
 import com.musenkishi.wally.base.WallyApplication;
-import com.musenkishi.wally.observers.FileChangeReceiver;
+import com.musenkishi.wally.observers.FileReceiver;
 import com.musenkishi.wally.observers.FiltersChangeReceiver;
 import com.musenkishi.wally.views.TabBarView;
 
@@ -45,7 +45,7 @@ public class MainActivity extends BaseActivity {
     private ViewPager viewPager;
     private SmartFragmentPagerAdapter pagerAdapter;
     private TabBarView tabBarView;
-    private FileChangeReceiver fileChangeReceiver;
+    private FileReceiver fileReceiver;
     private FiltersChangeReceiver filtersChangeReceiver;
 
     @Override
@@ -62,7 +62,7 @@ public class MainActivity extends BaseActivity {
             tabBarView = (TabBarView) getSupportActionBar().getCustomView();
         }
 
-        fileChangeReceiver = new FileChangeReceiver();
+        fileReceiver = new FileReceiver();
         filtersChangeReceiver = new FiltersChangeReceiver();
 
         viewPager = (ViewPager) findViewById(R.id.fragment_pager);
@@ -127,24 +127,24 @@ public class MainActivity extends BaseActivity {
     @Override
     public void onResume() {
         super.onResume();
-        registerReceiver(fileChangeReceiver, new IntentFilter(FileChangeReceiver.FILES_CHANGED));
+        registerReceiver(fileReceiver, new IntentFilter(FileReceiver.GET_FILES));
         registerReceiver(filtersChangeReceiver, new IntentFilter(FiltersChangeReceiver.FILTERS_CHANGED));
     }
 
     @Override
     public void onPause() {
-        unregisterReceiver(fileChangeReceiver);
+        unregisterReceiver(fileReceiver);
         unregisterReceiver(filtersChangeReceiver);
         super.onPause();
     }
 
-    public void addOnFileChangedListener(FileChangeReceiver.OnFileChangeListener onFileChangeListener) {
-        if (fileChangeReceiver != null) {
-            fileChangeReceiver.addListener(onFileChangeListener);
+    public void addOnFileChangedListener(FileReceiver.OnFileChangeListener onFileChangeListener) {
+        if (fileReceiver != null) {
+            fileReceiver.addListener(onFileChangeListener);
         }
     }
 
-    public void addOnFiltersChangedListener(FiltersChangeReceiver.OnFiltersChangeListener onFiltersChangeListener){
+    public void addOnFiltersChangedListener(FiltersChangeReceiver.OnFiltersChangeListener onFiltersChangeListener) {
         if (filtersChangeReceiver != null) {
             filtersChangeReceiver.addListener(onFiltersChangeListener);
         }
@@ -153,11 +153,11 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void handleReceivedIntent(Context context, Intent intent) {
         long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, 0L);
-        if (WallyApplication.getDownloadIDs().containsKey(id)){
+        if (WallyApplication.getDownloadIDs().containsKey(id)) {
             WallyApplication.getDownloadIDs().remove(id);
-            if (fileChangeReceiver != null) {
-                Intent fileChangeIntent = new Intent(FileChangeReceiver.FILES_CHANGED);
-                fileChangeReceiver.onReceive(context, fileChangeIntent);
+            if (fileReceiver != null) {
+                Intent fileChangeIntent = new Intent(FileReceiver.GET_FILES);
+                fileReceiver.onReceive(context, fileChangeIntent);
             }
             View heartTabImageView = tabBarView.getTab(4).getImageView();
             startHeartPopoutAnimation(heartTabImageView, Color.WHITE);
