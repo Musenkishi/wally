@@ -46,13 +46,13 @@ import com.musenkishi.wally.adapters.RecyclerImagesAdapter;
 import com.musenkishi.wally.base.GridFragment;
 import com.musenkishi.wally.base.WallyApplication;
 import com.musenkishi.wally.dataprovider.DataProvider;
-import com.musenkishi.wally.dataprovider.FileManager;
 import com.musenkishi.wally.dataprovider.NetworkDataProvider;
 import com.musenkishi.wally.dataprovider.models.DataProviderError;
 import com.musenkishi.wally.dataprovider.models.SaveImageRequest;
 import com.musenkishi.wally.models.Image;
 import com.musenkishi.wally.models.ImagePage;
 import com.musenkishi.wally.notification.NotificationProvider;
+import com.musenkishi.wally.observers.FileReceiver;
 import com.musenkishi.wally.observers.FiltersChangeReceiver;
 import com.musenkishi.wally.views.AutoGridView;
 import com.musenkishi.wally.views.swipeclearlayout.SwipeClearLayout;
@@ -60,7 +60,7 @@ import com.musenkishi.wally.views.swipeclearlayout.SwipeClearLayout;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import static com.musenkishi.wally.observers.FileChangeReceiver.OnFileChangeListener;
+import static com.musenkishi.wally.observers.FileReceiver.OnFileChangeListener;
 import static com.musenkishi.wally.observers.FiltersChangeReceiver.OnFiltersChangeListener;
 
 /**
@@ -82,7 +82,6 @@ public class RandomImagesFragment extends GridFragment implements
     private static final int MSG_ERROR_IMAGE_REQUEST = 121;
     private static final int MSG_IMAGES_REQUEST_CREATE = 122;
     private static final int MSG_IMAGES_REQUEST_APPEND = 123;
-    private static final int MSG_GET_LIST_OF_SAVED_IMAGES = 127;
     private static final int MSG_SAVE_LIST_OF_SAVED_IMAGES = 128;
     private static final int MSG_ERROR_IMAGE_SAVING = 129;
     private static final int MSG_SAVE_BUTTON_CLICKED = 130;
@@ -117,7 +116,7 @@ public class RandomImagesFragment extends GridFragment implements
         setHasOptionsMenu(true);
         setActionBarColor(getResources().getColor(R.color.Actionbar_Random_Background));
         setupHandlers();
-        backgroundHandler.sendEmptyMessage(MSG_GET_LIST_OF_SAVED_IMAGES);
+        getActivity().sendBroadcast(new Intent(FileReceiver.GET_FILES));
     }
 
     @Override
@@ -326,7 +325,7 @@ public class RandomImagesFragment extends GridFragment implements
                     if (saveImageRequest.getDownloadID() != null && getActivity() instanceof MainActivity){
                         WallyApplication.getDownloadIDs().put(saveImageRequest.getDownloadID(), imagePage.imageId());
                     } else {
-                        onFileChange();
+                        getActivity().sendBroadcast(new Intent(FileReceiver.GET_FILES));
                     }
                 }
                 break;
@@ -374,22 +373,6 @@ public class RandomImagesFragment extends GridFragment implements
                     currentList.addAll(extraImages);
                     imagesAdapter.notifyItemRangeInserted(endPosition, extraImages.size());
                 }
-                break;
-
-            case MSG_GET_LIST_OF_SAVED_IMAGES:
-                HashMap<String, Boolean> existingFiles = new HashMap<String, Boolean>();
-
-                FileManager fileManager = new FileManager();
-                for (Uri uri : fileManager.getFiles()) {
-                    String filename = uri.getLastPathSegment();
-                    String[] filenames = filename.split("\\.(?=[^\\.]+$)"); //split filename from it's extension
-                    existingFiles.put(filenames[0], true);
-                }
-
-                Message fileListMessage = uiHandler.obtainMessage();
-                fileListMessage.obj = existingFiles;
-                fileListMessage.what = MSG_SAVE_LIST_OF_SAVED_IMAGES;
-                uiHandler.sendMessage(fileListMessage);
                 break;
 
             case MSG_SAVE_LIST_OF_SAVED_IMAGES:
@@ -452,11 +435,6 @@ public class RandomImagesFragment extends GridFragment implements
     }
 
     @Override
-    public void onFileChange() {
-        backgroundHandler.sendEmptyMessage(MSG_GET_LIST_OF_SAVED_IMAGES);
-    }
-
-    @Override
     public void onRefresh() {
         getImages(1, null);
     }
@@ -469,5 +447,13 @@ public class RandomImagesFragment extends GridFragment implements
 
     @Override
     public void onSwipe(int progress, int pixels) {
+    }
+
+    @Override
+    public void onFileChange(Map<String, Boolean> existingFiles) {
+        Message fileListMessage = uiHandler.obtainMessage();
+        fileListMessage.obj = existingFiles;
+        fileListMessage.what = MSG_SAVE_LIST_OF_SAVED_IMAGES;
+        uiHandler.sendMessage(fileListMessage);
     }
 }
