@@ -39,10 +39,10 @@ public abstract class ImagePage implements Parcelable {
     public abstract String uploader();
     public abstract String uploadDate();
     public abstract Author author();
-    /*public abstract ArrayList<Tag> tags();*/
+    public abstract ArrayList<Tag> tags();
 
-    public static ImagePage create(String title, String imageId, Uri imagePath, String resolution, String category, String rating, String uploader, String uploadDate, Author author/*, ArrayList<Tag> tags*/) {
-        return new AutoParcel_ImagePage(title, imageId, imagePath, resolution, category, rating, uploader, uploadDate, author/*, tags*/);
+    public static ImagePage create(String title, String imageId, Uri imagePath, String resolution, String category, String rating, String uploader, String uploadDate, Author author, ArrayList<Tag> tags) {
+        return new AutoParcel_ImagePage(title, imageId, imagePath, resolution, category, rating, uploader, uploadDate, author, tags);
     }
 
     public int getImageHeight() {

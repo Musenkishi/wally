@@ -27,7 +27,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.util.Pair;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -76,18 +79,18 @@ public class ToplistFragment extends GridFragment implements RecyclerImagesAdapt
     private static final int MSG_IMAGES_REQUEST_APPEND = 123;
     private static final int MSG_SAVE_LIST_OF_SAVED_IMAGES = 128;
     private static final int MSG_ERROR_IMAGE_SAVING = 129;
-    private static final int MSG_SAVE_BUTTON_CLICKED = 130;
-    private static final int MSG_PAGE_RECEIVED = 131;
-    private static final String STATE_IMAGES = TAG + ".Images";
-    private static final String STATE_CURRENT_PAGE = TAG + ".Current.Page";
+     private static final int MSG_SAVE_BUTTON_CLICKED = 130;
+     private static final int MSG_PAGE_RECEIVED = 131;
+     private static final String STATE_IMAGES = TAG + ".Images";
+     private static final String STATE_CURRENT_PAGE = TAG + ".Current.Page";
 
-    private boolean isLoading;
-    private Handler backgroundHandler;
-    private Handler uiHandler;
-    private HashMap<String, Boolean> savedFiles;
-    private int currentPage = 1;
+     private boolean isLoading;
+     private Handler backgroundHandler;
+     private Handler uiHandler;
+     private HashMap<String, Boolean> savedFiles;
+     private int currentPage = 1;
 
-    /**
+     /**
      * Returns a new instance of this fragment for the given section
      * number.
      */
@@ -134,6 +137,13 @@ public class ToplistFragment extends GridFragment implements RecyclerImagesAdapt
     }
 
     @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        gridView.setClipToPadding(false);
+        setInsets(getActivity(), gridView, false, 0, view.getResources().getDimensionPixelSize(R.dimen.gridview_bottom_padding));
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
     }
@@ -153,13 +163,6 @@ public class ToplistFragment extends GridFragment implements RecyclerImagesAdapt
         backgroundHandler.removeCallbacksAndMessages(null);
         uiHandler.removeCallbacksAndMessages(null);
         backgroundHandler.getLooper().quit();
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        gridView.setClipToPadding(false);
-        setInsets(getActivity(), gridView, false, 0, view.getResources().getDimensionPixelSize(R.dimen.gridview_bottom_padding));
     }
 
     private void getMoreImagesIfNeeded(int position, int totalItemCount) {
@@ -395,7 +398,17 @@ public class ToplistFragment extends GridFragment implements RecyclerImagesAdapt
                     thumb = squaringDrawable.getBitmap();
                 }
                 WallyApplication.setBitmapThumb(thumb);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+                String transitionNameImage = getString(R.string.transition_image_details);
+                ActivityOptionsCompat options =
+                        ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(),
+                                Pair.create(view.findViewById(R.id.thumb_image_view), transitionNameImage)
+                        );
+                ActivityCompat.startActivityForResult(getActivity(), intent, ImageDetailsActivity.REQUEST_EXTRA_TAG, options.toBundle());
+
+                } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     view.buildDrawingCache(true);
                     Bitmap drawingCache = view.getDrawingCache(true);
                     Bundle bundle = ActivityOptions.makeThumbnailScaleUpAnimation(view, drawingCache, 0, 0).toBundle();

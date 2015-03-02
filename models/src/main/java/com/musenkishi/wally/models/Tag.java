@@ -16,9 +16,20 @@
 
 package com.musenkishi.wally.models;
 
+import android.os.Parcelable;
+
+import auto.parcel.AutoParcel;
+
 /**
  * Placeholder for tags
  * Created by Musenkishi on 2014-02-23.
  */
-public class Tag {
+@AutoParcel
+public abstract class Tag implements Parcelable {
+
+    public abstract String name();
+
+    public static Tag create(String name) {
+        return new AutoParcel_Tag(name);
+    }
 }

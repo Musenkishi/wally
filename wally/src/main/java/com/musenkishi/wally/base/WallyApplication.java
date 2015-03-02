@@ -27,6 +27,7 @@ import com.musenkishi.wally.BuildConfig;
 import com.musenkishi.wally.dataprovider.DataProvider;
 import com.musenkishi.wally.dataprovider.SharedPreferencesDataProvider;
 import com.musenkishi.wally.dataprovider.okhttp.OkHttpUrlLoader;
+import com.musenkishi.wally.fragments.SearchFragment;
 import com.musenkishi.wally.models.ExceptionReporter;
 import com.musenkishi.wally.models.filters.FilterAspectRatioKeys;
 import com.musenkishi.wally.models.filters.FilterBoardsKeys;
@@ -53,6 +54,7 @@ public class WallyApplication extends Application {
     private static Context applicationContext;
     private static HashMap<Long, String> pairedDownloadIds;
     private static HashSet<Long> downloadIDs;
+    private static HashMap<String, Object> searchFragmentMessages;
 
     private static Bitmap bitmapThumb;
 
@@ -175,5 +177,25 @@ public class WallyApplication extends Application {
 
     public static void setBitmapThumb(Bitmap bitmapThumb) {
         WallyApplication.bitmapThumb = bitmapThumb;
+    }
+
+    public static HashMap<String, Object> getSearchFragmentMessages() {
+        if (searchFragmentMessages == null) {
+            searchFragmentMessages = new HashMap<>();
+        }
+        return searchFragmentMessages;
+    }
+
+    public static HashMap<String, Object> readMessages(String fragmentTag) {
+        HashMap<String, Object> messages = new HashMap<>();
+        if (fragmentTag != null) {
+            if (fragmentTag.equals(SearchFragment.TAG)
+                    && !getSearchFragmentMessages().isEmpty()) {
+                messages.putAll(searchFragmentMessages);
+                searchFragmentMessages.clear();
+                return messages;
+            }
+        }
+        return messages;
     }
 }

@@ -58,6 +58,7 @@
     <string name="image_details_specs_category_title">Category</string>
     <string name="image_details_tags_title">Tags</string>
     <string name="image_details_specs_rating_title">Rating</string>
+    <string name="image_details_specs_tags_title">Tags</string>
     <string name="fragment_images_title">Toplist</string>
     <string name="saved">Saved</string>
     <string name="search">Search…</string>
@@ -87,5 +88,6 @@
     <string name="error_backend_check_backend">Check if Wallhaven is working?</string>
     <string name="you_must_have_at_least_one_category_checked">You must have at least one category checked</string>
     <string name="you_must_have_at_least_one_rating_checked">You must have at least one rating checked</string>
+    <string name="transition_image_details">transition_detail_image</string>
 
 </resources>

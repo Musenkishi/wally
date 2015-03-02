@@ -64,16 +64,19 @@ import com.musenkishi.wally.dataprovider.DataProvider;
 import com.musenkishi.wally.dataprovider.FileManager;
 import com.musenkishi.wally.dataprovider.models.DataProviderError;
 import com.musenkishi.wally.dataprovider.models.SaveImageRequest;
+import com.musenkishi.wally.fragments.SearchFragment;
 import com.musenkishi.wally.models.Author;
 import com.musenkishi.wally.models.Image;
 import com.musenkishi.wally.models.ImagePage;
 import com.musenkishi.wally.models.Size;
-import com.musenkishi.wally.observers.FileChangeReceiver;
+import com.musenkishi.wally.models.Tag;
+import com.musenkishi.wally.observers.FileReceiver;
 import com.musenkishi.wally.util.Blur;
+import com.musenkishi.wally.util.PaletteLoader;
 import com.musenkishi.wally.util.PaletteRequest;
+import com.musenkishi.wally.views.FlowLayout;
 import com.musenkishi.wally.views.ObservableScrollView;
 
-import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
 import static com.musenkishi.wally.views.ObservableScrollView.ScrollViewListener;
@@ -100,23 +103,25 @@ public class ImageDetailsActivity extends BaseActivity implements Handler.Callba
     private static final String STATE_IMAGE_PAGE = "ImageDetailsActivity.ImagePage";
 
     public static final String INTENT_EXTRA_IMAGE = TAG + ".Intent.Image";
+    public static final String INTENT_EXTRA_TAG_NAME = TAG + ".Intent.Tag.Name";
+    public static final int REQUEST_EXTRA_TAG = 13134;
 
     private Handler uiHandler;
     private Handler backgroundHandler;
 
     private ObservableScrollView scrollView;
-    private PhotoView photoView;
+    private ImageView photoView;
     private PhotoViewAttacher photoViewAttacher;
     private ImageButton buttonFullscreen;
     private ProgressBar loader;
     private Uri pageUri;
-    private ShareActionProvider shareActionProvider;
     private TextView textViewUploader;
     private TextView textViewUploadDate;
     private TextView textViewSource;
     private TextView textViewResolution;
     private TextView textViewCategory;
     private TextView textViewRating;
+    private FlowLayout flowLayoutTags;
     private Button buttonSetAs;
     private Button buttonSave;
     private ImagePage imagePage;
@@ -175,6 +180,8 @@ public class ImageDetailsActivity extends BaseActivity implements Handler.Callba
 
                 size = fitToWidthAndKeepRatio(image.getWidth(), image.getHeight());
 
+                imageSize = size;
+
                 photoView.getLayoutParams().width = size.getWidth();
                 photoView.getLayoutParams().height = size.getHeight();
 
@@ -220,9 +227,6 @@ public class ImageDetailsActivity extends BaseActivity implements Handler.Callba
 
         int animationDuration = animate ? 300 : 0;
 
-        photoView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        photoViewAttacher.setScaleType(ImageView.ScaleType.CENTER_CROP);
-
         final int sidePadding = getResources().getDimensionPixelSize(R.dimen.activity_details_scrollview_side_padding);
         int fabPadding = getResources().getDimensionPixelSize(R.dimen.fab_padding_positive);
 
@@ -246,20 +250,10 @@ public class ImageDetailsActivity extends BaseActivity implements Handler.Callba
             });
             valueAnimator.start();
         } else {
-            photoLayoutHolder.setPadding(
-                    0,
-                    0,
-                    0,
-                    0
-            );
+            photoLayoutHolder.setPadding(0, 0, 0, 0 );
         }
 
-        scrollView.setPadding(
-                0,
-                0,
-                0,
-                -fabPadding
-        );
+        scrollView.setPadding(0, 0, 0, -fabPadding );
         specsLayout.setPadding(0, 0, 0, fabPadding);
 
         ValueAnimator valueAnimator = ValueAnimator.ofInt(detailsViewGroup.getPaddingTop(), size.getHeight());
@@ -292,7 +286,7 @@ public class ImageDetailsActivity extends BaseActivity implements Handler.Callba
         MenuItem shareMenuItem = menu.findItem(R.id.action_share);
 
         if (shareMenuItem != null) {
-            shareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareMenuItem);
+            ShareActionProvider shareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareMenuItem);
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
             shareIntent.setType("text/plain");
             shareIntent.putExtra(Intent.EXTRA_TEXT, pageUri.toString());
@@ -342,7 +336,7 @@ public class ImageDetailsActivity extends BaseActivity implements Handler.Callba
     private void setupViews() {
         scrollView = (ObservableScrollView) findViewById(R.id.image_details_scrollview);
         imageHolder = (ViewGroup) findViewById(R.id.image_details_imageview_holder);
-        photoView = (PhotoView) findViewById(R.id.image_details_imageview);
+        photoView = (ImageView) findViewById(R.id.image_details_imageview);
         buttonFullscreen = (ImageButton) findViewById(R.id.image_details_button_fullscreen);
         loader = (ProgressBar) findViewById(R.id.image_details_loader);
         textViewUploader = (TextView) findViewById(R.id.image_details_uploader);
@@ -351,6 +345,7 @@ public class ImageDetailsActivity extends BaseActivity implements Handler.Callba
         textViewResolution = (TextView) findViewById(R.id.image_details_resolution);
         textViewCategory = (TextView) findViewById(R.id.image_details_category);
         textViewRating = (TextView) findViewById(R.id.image_details_rating);
+        flowLayoutTags = (FlowLayout) findViewById(R.id.image_details_tags_layout);
         buttonSetAs = (Button) findViewById(R.id.toolbar_set_as);
         buttonSave = (Button) findViewById(R.id.toolbar_save);
         toolbar = (ViewGroup) findViewById(R.id.image_details_toolbar);
@@ -371,10 +366,6 @@ public class ImageDetailsActivity extends BaseActivity implements Handler.Callba
                 sidePadding,
                 detailsViewGroup.getPaddingBottom()
         );
-
-        photoViewAttacher = new PhotoViewAttacher(photoView);
-        photoViewAttacher.setZoomable(false);
-        photoViewAttacher.setScaleType(ImageView.ScaleType.FIT_XY);
     }
 
     @Override
@@ -410,7 +401,7 @@ public class ImageDetailsActivity extends BaseActivity implements Handler.Callba
                 Display d = win.getDefaultDisplay();
                 int displayHeight = d.getHeight(); // Height of the actual device
 
-                if (imageSize.getHeight() > displayHeight) {
+                if (imageSize.getHeight() > displayHeight && photoViewAttacher != null) {
                     float[] values = new float[9];
                     photoViewAttacher.getDrawMatrix().getValues(values);
                     float imageHeight = imageSize.getHeight();
@@ -469,12 +460,39 @@ public class ImageDetailsActivity extends BaseActivity implements Handler.Callba
         uiHandler = new Handler(getMainLooper(), this);
     }
 
+    private void renderTags(Bitmap bitmap) {
+        if (this.palette == null && flowLayoutTags.getChildCount() > 0) {
+            for (int i = 0; i < flowLayoutTags.getChildCount(); i++) {
+                View tagView = flowLayoutTags.getChildAt(i);
+                TextView tagTextView = (TextView) tagView.findViewById(R.id.tag_item_text);
+
+                PaletteLoader.with(this, imagePage.imagePath().toString())
+                        .load(bitmap)
+                        .setPaletteRequest(new PaletteRequest(
+                                PaletteRequest.SwatchType.REGULAR_MUTED,
+                                PaletteRequest.SwatchColor.BACKGROUND))
+                        .into(tagTextView);
+            }
+        }
+    }
+
     private void renderColors(Bitmap bitmap) {
-        Message msgObj = backgroundHandler.obtainMessage();
-        msgObj.what = MSG_RENDER_PALETTE;
-        msgObj.obj = bitmap;
-        msgObj.arg1 = MSG_IMAGE_REQUEST_SAVED;
-        backgroundHandler.sendMessage(msgObj);
+
+        //Could already be rendered b.c. duplicate callback by Glide.
+        if (this.palette == null) {
+            PaletteLoader.with(this, imagePage.imagePath().toString())
+                    .load(bitmap)
+                    .setPaletteRequest(new PaletteRequest(
+                            PaletteRequest.SwatchType.DARK_MUTED,
+                            PaletteRequest.SwatchColor.BACKGROUND))
+                    .setListener(new PaletteLoader.OnPaletteRenderedListener() {
+                        @Override
+                        public void onRendered(Palette palette) {
+                            setColors(palette);
+                        }
+                    })
+                    .into(findViewById(R.id.image_details_root));
+        }
     }
 
     private void setColors(Palette palette){
@@ -484,7 +502,6 @@ public class ImageDetailsActivity extends BaseActivity implements Handler.Callba
         Palette.Swatch swatch = PaletteRequest.getBestSwatch(palette, palette.getDarkMutedSwatch());
         if (swatch != null) {
             photoLayoutHolder.setBackgroundColor(swatch.getRgb());
-            findViewById(R.id.image_details_root).setBackgroundColor(swatch.getRgb());
 
             Drawable floatingButtonBackground = getResources()
                     .getDrawable(R.drawable.floating_action_button);
@@ -683,7 +700,7 @@ public class ImageDetailsActivity extends BaseActivity implements Handler.Callba
 
                         @Override
                         public void onScanCompleted(String path, Uri uri) {
-                            getApplication().sendBroadcast(new Intent(FileChangeReceiver.FILES_CHANGED));
+                            getApplication().sendBroadcast(new Intent(FileReceiver.GET_FILES));
                         }
                     }
             );
@@ -714,10 +731,20 @@ public class ImageDetailsActivity extends BaseActivity implements Handler.Callba
 
         if (isInFullscreen()){
             scrollView.smoothScrollTo(0, (Integer) scrollView.getTag());
-            photoViewAttacher.setScale(1.0f, true);
+            if (photoViewAttacher != null) {
+                photoViewAttacher.cleanup();
+                photoViewAttacher = null;
+                photoView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            }
         } else {
             scrollView.setTag(scrollView.getScrollY());
             scrollView.smoothScrollTo(0, 0);
+
+            if (photoViewAttacher == null) {
+                photoViewAttacher = new PhotoViewAttacher(photoView);
+                photoViewAttacher.setZoomable(true);
+                photoViewAttacher.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            }
         }
 
         if (getSupportActionBar() != null) {
@@ -768,7 +795,7 @@ public class ImageDetailsActivity extends BaseActivity implements Handler.Callba
 
 
 
-        if (photoLayoutHolder.getTranslationY() > 0.0f) {
+        if (photoLayoutHolder.getTranslationY() != 0.0f) {
             photoLayoutHolder.animate()
                     .translationY(0.0f)
                     .setInterpolator(new EaseInOutBezierInterpolator())
@@ -800,14 +827,14 @@ public class ImageDetailsActivity extends BaseActivity implements Handler.Callba
             public void onAnimationStart(Animator animator) {}
             @Override
             public void onAnimationEnd(Animator animator) {
-                photoViewAttacher.setZoomable(true);
-                photoView.setZoomable(true);
-                photoViewAttacher.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
-                    @Override
-                    public void onPhotoTap(View view, float v, float v2) {
-                        toggleZoomImage();
-                    }
-                });
+                if (photoViewAttacher != null) {
+                    photoViewAttacher.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
+                        @Override
+                        public void onPhotoTap(View view, float v, float v2) {
+                            toggleZoomImage();
+                        }
+                    });
+                }
             }
             @Override
             public void onAnimationCancel(Animator animator) {}
@@ -905,9 +932,33 @@ public class ImageDetailsActivity extends BaseActivity implements Handler.Callba
                     textViewRating.setText(imagePage.rating());
                     final String imageUrl = imagePage.imagePath().toString();
 
+                    if (imagePage.tags().size() > 0) {
+                        flowLayoutTags.removeAllViews();
+                        for (final Tag tag : imagePage.tags()) {
+                            View tagView = getLayoutInflater().inflate(R.layout.view_tag_item, flowLayoutTags, false);
+                            TextView tagTextView = (TextView) tagView.findViewById(R.id.tag_item_text);
+                            tagTextView.setText(tag.name());
+
+                            flowLayoutTags.addView(tagView);
+
+                            tagTextView.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    WallyApplication.getSearchFragmentMessages().put(SearchFragment.EXTRA_MESSAGE_TAG, tag.name());
+                                    Intent intent = new Intent();
+                                    setResult(RESULT_OK, intent);
+                                    ImageDetailsActivity.this.finish();
+                                }
+                            });
+                        }
+                    } else {
+                        findViewById(R.id.image_details_tags_title).setVisibility(View.GONE);
+                        flowLayoutTags.setVisibility(View.GONE);
+                    }
+
                     Glide.with(getApplicationContext())
                             .load(imageUrl)
-                            .placeholder(photoViewAttacher.getImageView().getDrawable())
+                            .placeholder(photoView.getDrawable())
                             .fitCenter()
                             .listener(new RequestListener<String, GlideDrawable>() {
                                 @Override
@@ -928,8 +979,11 @@ public class ImageDetailsActivity extends BaseActivity implements Handler.Callba
                                                                boolean isFirstResource) {
 
                                     photoView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                                    photoViewAttacher.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
+                                    renderTags(
+                                            ((GlideBitmapDrawable) resource.getCurrent())
+                                                    .getBitmap()
+                                    );
                                     renderColors(
                                             ((GlideBitmapDrawable) resource.getCurrent())
                                                     .getBitmap()
@@ -951,8 +1005,6 @@ public class ImageDetailsActivity extends BaseActivity implements Handler.Callba
 
                                     setupPaddings(size, true);
 
-                                    enableParallaxEffect(scrollView, photoLayoutHolder);
-
                                     scrollUpToolbarIfNeeded();
 
                                     return false;
@@ -963,6 +1015,7 @@ public class ImageDetailsActivity extends BaseActivity implements Handler.Callba
                     specsLayout.setAlpha(1.0f);
                     specsLayout.scheduleLayoutAnimation();
 
+                    enableParallaxEffect(scrollView, photoLayoutHolder);
                 }
                 break;
 
@@ -1000,11 +1053,11 @@ public class ImageDetailsActivity extends BaseActivity implements Handler.Callba
             case MSG_RENDER_PALETTE:
 
                 Bitmap bitmap1 = (Bitmap) msg.obj;
-                Palette colorScheme = Palette.generate(bitmap1);
+                Palette palette = Palette.generate(bitmap1);
 
                 Message msgObj = uiHandler.obtainMessage();
                 msgObj.what = MSG_SET_IMAGE_AND_PALETTE;
-                msgObj.obj = colorScheme;
+                msgObj.obj = palette;
                 uiHandler.sendMessage(msgObj);
 
                 break;
@@ -1022,4 +1075,5 @@ public class ImageDetailsActivity extends BaseActivity implements Handler.Callba
         }
         return false;
     }
+
 }

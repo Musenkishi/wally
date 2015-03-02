@@ -89,9 +89,9 @@ public abstract class GridFragment extends BaseFragment {
     }
 
     protected void setupAutoSizeGridView() {
-        final ViewTreeObserver vto = gridView.getViewTreeObserver();
-        if (vto != null) {
-            vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        final ViewTreeObserver viewTreeObserver = gridView.getViewTreeObserver();
+        if (viewTreeObserver != null) {
+            viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 int lastWidth = -1;
 
                 @Override

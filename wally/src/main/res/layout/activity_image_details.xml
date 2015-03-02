@@ -36,13 +36,14 @@
             android:layout_width="match_parent"
             >
 
-            <uk.co.senab.photoview.PhotoView
+            <ImageView
                 android:id="@+id/image_details_imageview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:scaleType="centerCrop"
                 android:layout_centerVertical="true"
+                android:transitionName="@string/transition_image_details"
                 android:contentDescription="@string/image_details_image_desc"/>
 
             <ProgressBar
@@ -358,6 +359,45 @@
                             android:textSize="14sp"
                             android:singleLine="true"
                             android:ellipsize="end"
+                            />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:paddingTop="@dimen/default_gap"
+                        android:paddingLeft="@dimen/default_gap"
+                        android:paddingRight="@dimen/default_gap"
+                        android:clipChildren="false">
+
+                        <TextView
+                            android:id="@+id/image_details_tags_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start"
+                            android:gravity="start"
+                            android:fontFamily="sans-serif"
+                            android:textColor="@color/Black.Transparent"
+                            android:textSize="16sp"
+                            android:text="@string/image_details_specs_tags_title"
+                            />
+
+                        <TextView
+                            android:id="@+id/image_details_tags"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/image_details_tags_title"
+                            android:fontFamily="sans-serif"
+                            android:textColor="@color/Grey.Dark"
+                            android:textSize="14sp"
+                            />
+
+                        <com.musenkishi.wally.views.FlowLayout
+                            android:id="@+id/image_details_tags_layout"
+                            android:layout_below="@+id/image_details_tags_title"
+                            android:paddingTop="4dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
                             />
                     </RelativeLayout>
                 </LinearLayout>

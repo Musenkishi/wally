@@ -32,6 +32,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.graphics.Palette;
@@ -67,13 +69,13 @@ import com.musenkishi.wally.base.BaseActivity;
 import com.musenkishi.wally.base.GridFragment;
 import com.musenkishi.wally.base.WallyApplication;
 import com.musenkishi.wally.dataprovider.DataProvider;
-import com.musenkishi.wally.observers.FileReceiver;
 import com.musenkishi.wally.dataprovider.NetworkDataProvider;
 import com.musenkishi.wally.dataprovider.models.DataProviderError;
 import com.musenkishi.wally.dataprovider.models.SaveImageRequest;
 import com.musenkishi.wally.models.Image;
 import com.musenkishi.wally.models.ImagePage;
 import com.musenkishi.wally.notification.NotificationProvider;
+import com.musenkishi.wally.observers.FileReceiver;
 import com.musenkishi.wally.observers.FiltersChangeReceiver;
 import com.musenkishi.wally.util.PaletteRequest;
 
@@ -81,13 +83,14 @@ import net.margaritov.preference.colorpicker.dialog.ColorPickerDialogFragment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import static com.musenkishi.wally.observers.FileReceiver.OnFileChangeListener;
 import static com.musenkishi.wally.observers.FiltersChangeReceiver.OnFiltersChangeListener;
 
 /**
  * The fragment used for searching wallpapers.
- *
+ * <p/>
  * Created by Freddie (Musenkishi) Lust-Hed on 2014-05-11.
  */
 public class SearchFragment extends GridFragment implements
@@ -96,7 +99,8 @@ public class SearchFragment extends GridFragment implements
         OnFileChangeListener,
         OnFiltersChangeListener {
 
-    public static final String TAG = "com.musenkishi.wally.SearchFragment";
+    public static final String TAG = "Wally.SearchFragment";
+    public static final String EXTRA_MESSAGE_TAG = TAG + ".Extra.Tag.Name";
 
     private static final int MSG_GET_IMAGES = 119;
     private static final int MSG_ERROR_IMAGE_REQUEST = 121;
@@ -109,7 +113,7 @@ public class SearchFragment extends GridFragment implements
     private static final int MSG_SAVE_BUTTON_CLICKED = 132;
     private static final int MSG_PAGE_RECEIVED = 133;
     private static final String STATE_IMAGES = TAG + ".Images";
-    private static final String STATE_QUERY = TAG +".Query";
+    private static final String STATE_QUERY = TAG + ".Query";
     private static final String STATE_COLOR = TAG + ".CurrentColor";
     private static final String STATE_COLOR_TEXT = TAG + ".CurrentColor.Text";
     private static final String STATE_CURRENT_PAGE = TAG + ".Current.Page";
@@ -180,19 +184,7 @@ public class SearchFragment extends GridFragment implements
                 @Override
                 public void onClick(View v) {
                     quickReturnEditText.setCursorVisible(true);
-                    quickReturnView.animate()
-                            .translationY(0.0f)
-                            .setDuration(300)
-                            .setInterpolator(new EaseInOutBezierInterpolator())
-                            .start()
-                    ;
-                    quickReturnBackground.animate()
-                            .translationY(0.0f)
-                            .alpha(1.0f)
-                            .setDuration(300)
-                            .setInterpolator(new EaseInOutBezierInterpolator())
-                            .start()
-                    ;
+                    restoreQuickReturnView();
                 }
             });
             quickReturnEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -242,10 +234,10 @@ public class SearchFragment extends GridFragment implements
                     }
                     quickReturnView.setTranslationY(newTranslationY);
 
-                    float percent = (-maxTranslationY)/100.0f;
-                    float currentPercent = 100 - (newTranslationY/percent);
+                    float percent = (-maxTranslationY) / 100.0f;
+                    float currentPercent = 100 - (newTranslationY / percent);
 
-                    quickReturnBackground.setAlpha(currentPercent/100);
+                    quickReturnBackground.setAlpha(currentPercent / 100);
                     quickReturnBackground.setTranslationY(newTranslationY);
 
                 }
@@ -283,7 +275,7 @@ public class SearchFragment extends GridFragment implements
             });
 
             setupAutoSizeGridView();
-            if (savedInstanceState != null && savedInstanceState.containsKey(STATE_IMAGES)){
+            if (savedInstanceState != null && savedInstanceState.containsKey(STATE_IMAGES)) {
                 query = savedInstanceState.getString(STATE_QUERY, "");
                 Message msgObj = uiHandler.obtainMessage();
                 msgObj.what = MSG_IMAGES_REQUEST_CREATE;
@@ -367,6 +359,18 @@ public class SearchFragment extends GridFragment implements
                 }
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        HashMap<String, Object> messages = WallyApplication.readMessages(TAG);
+        if (!messages.isEmpty()){
+            String tagName = (String) messages.get(EXTRA_MESSAGE_TAG);
+            if (tagName != null) {
+                searchTag(tagName);
+            }
+        }
     }
 
     @Override
@@ -684,13 +688,13 @@ public class SearchFragment extends GridFragment implements
 
     }
 
-    private void colorizeColorTag(int backgroundColor, int primaryColor, int secondaryColor, String hexColor){
-            Drawable colorTagCardBackground = getResources().getDrawable(R.drawable.chip_background);
-            colorTagCardBackground.setColorFilter(backgroundColor, PorterDuff.Mode.MULTIPLY);
-            colorTagCard.setBackgroundDrawable(colorTagCardBackground);
-            colorTagClearButton.getDrawable().setColorFilter(secondaryColor, PorterDuff.Mode.MULTIPLY);
-            colorTagTextView.setTextColor(primaryColor);
-            colorTagTextView.setText("#" + hexColor);
+    private void colorizeColorTag(int backgroundColor, int primaryColor, int secondaryColor, String hexColor) {
+        Drawable colorTagCardBackground = getResources().getDrawable(R.drawable.chip_background);
+        colorTagCardBackground.setColorFilter(backgroundColor, PorterDuff.Mode.MULTIPLY);
+        colorTagCard.setBackgroundDrawable(colorTagCardBackground);
+        colorTagClearButton.getDrawable().setColorFilter(secondaryColor, PorterDuff.Mode.MULTIPLY);
+        colorTagTextView.setTextColor(primaryColor);
+        colorTagTextView.setText("#" + hexColor);
     }
 
     @Override
@@ -703,14 +707,13 @@ public class SearchFragment extends GridFragment implements
 
     @Override
     public void onFiltersChange() {
-        gridView.setAdapter(null);
-        if (query != null && !"".equals(query)) {
-            showLoader();
-            getImages(1, query);
+        if (this.query != null && !this.query.isEmpty()) {
+            restoreQuickReturnView();
+            search();
         }
     }
 
-    private void setupAdapter(){
+    private void setupAdapter() {
 
         imagesAdapter.setOnGetViewListener(new RecyclerImagesAdapter.OnGetViewListener() {
             @Override
@@ -746,7 +749,16 @@ public class SearchFragment extends GridFragment implements
                     thumb = squaringDrawable.getBitmap();
                 }
                 WallyApplication.setBitmapThumb(thumb);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+                    String transitionNameImage = getString(R.string.transition_image_details);
+                    ActivityOptionsCompat options =
+                            ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(),
+                                    android.support.v4.util.Pair.create(view.findViewById(R.id.thumb_image_view), transitionNameImage)
+                            );
+                    ActivityCompat.startActivityForResult(getActivity(), intent, ImageDetailsActivity.REQUEST_EXTRA_TAG, options.toBundle());
+
+                } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     view.buildDrawingCache(true);
                     Bitmap drawingCache = view.getDrawingCache(true);
                     Bundle bundle = ActivityOptions.makeThumbnailScaleUpAnimation(view, drawingCache, 0, 0).toBundle();
@@ -758,4 +770,35 @@ public class SearchFragment extends GridFragment implements
         });
     }
 
+    public void searchTag(String tag) {
+        if (!tag.equalsIgnoreCase(this.query)
+                && quickReturnEditText != null
+                && quickReturnView != null
+                && quickReturnBackground != null) {
+
+            if (!tag.startsWith("#")){
+                tag = "#" + tag;
+            }
+
+            quickReturnEditText.setText(tag);
+            restoreQuickReturnView();
+            search();
+        }
+    }
+
+    private void restoreQuickReturnView() {
+        quickReturnView.animate()
+                .translationY(0.0f)
+                .setDuration(300)
+                .setInterpolator(new EaseInOutBezierInterpolator())
+                .start()
+        ;
+        quickReturnBackground.animate()
+                .translationY(0.0f)
+                .alpha(1.0f)
+                .setDuration(300)
+                .setInterpolator(new EaseInOutBezierInterpolator())
+                .start()
+        ;
+    }
 }

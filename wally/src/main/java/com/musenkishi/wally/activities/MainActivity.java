@@ -39,8 +39,9 @@ import com.musenkishi.wally.views.TabBarView;
 
 public class MainActivity extends BaseActivity {
 
-    public static final String TAG = "com.musenkishi.wally.MainActivity";
+    public static final String TAG = "Wally.MainActivity";
     private static final String STATE_APPBAR_COLOR = TAG + ".AppBar.Color";
+    private static final String STATE_SEARCH_MESSAGES = TAG + ".Search.Messages";
 
     private ViewPager viewPager;
     private SmartFragmentPagerAdapter pagerAdapter;
@@ -66,7 +67,7 @@ public class MainActivity extends BaseActivity {
         filtersChangeReceiver = new FiltersChangeReceiver();
 
         viewPager = (ViewPager) findViewById(R.id.fragment_pager);
-        pagerAdapter = new SmartFragmentPagerAdapter(getSupportFragmentManager());
+        initiatePagerAdapter();
 
         viewPager.setAdapter(pagerAdapter);
         viewPager.setOffscreenPageLimit(4);
@@ -106,8 +107,16 @@ public class MainActivity extends BaseActivity {
             }
         });
 
-        if (savedInstanceState != null && savedInstanceState.containsKey(STATE_APPBAR_COLOR)){
-            colorizeActionBar(savedInstanceState.getInt(STATE_APPBAR_COLOR));
+        if (savedInstanceState != null) {
+            if (savedInstanceState.containsKey(STATE_APPBAR_COLOR)) {
+                colorizeActionBar(savedInstanceState.getInt(STATE_APPBAR_COLOR));
+            }
+        }
+    }
+
+    private void initiatePagerAdapter() {
+        if (pagerAdapter == null) {
+            pagerAdapter = new SmartFragmentPagerAdapter(getSupportFragmentManager());
         }
     }
 
@@ -162,6 +171,17 @@ public class MainActivity extends BaseActivity {
             View heartTabImageView = tabBarView.getTab(4).getImageView();
             startHeartPopoutAnimation(heartTabImageView, Color.WHITE);
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK && requestCode == ImageDetailsActivity.REQUEST_EXTRA_TAG) {
+            if (viewPager != null) {
+                final int searchFragmentPosition = 2; // 2 == search fragment
+                viewPager.setCurrentItem(searchFragmentPosition, false);
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     public TabBarView getTabBarView() {

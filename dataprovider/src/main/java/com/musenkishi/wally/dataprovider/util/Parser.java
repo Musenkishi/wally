@@ -23,6 +23,7 @@ import com.musenkishi.wally.models.Author;
 import com.musenkishi.wally.models.ExceptionReporter;
 import com.musenkishi.wally.models.Image;
 import com.musenkishi.wally.models.ImagePage;
+import com.musenkishi.wally.models.Tag;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -163,7 +164,27 @@ public class Parser {
                 imagePath = imagePath.buildUpon().scheme("http").build();
             }
         }
-        return ImagePage.create(title, idUri, imagePath, resolution, category, rating, uploader, uploadDate, author);
+
+        ArrayList<Tag> tags = getTags(document);
+
+        return ImagePage.create(title, idUri, imagePath, resolution, category, rating, uploader, uploadDate, author, tags);
+    }
+
+    private ArrayList<Tag> getTags(Document document) {
+
+        ArrayList<Tag> tags = new ArrayList<>();
+
+        Iterator thumbIterator = document.select("ul#tags li").iterator();
+
+        while (thumbIterator.hasNext()) {
+            Element wrapperElement = (Element) thumbIterator.next();
+            Element tagNameElement = wrapperElement.select("a.tagname").first();
+            String tagname = tagNameElement.text().trim();
+            Tag tag = Tag.create(tagname);
+            tags.add(tag);
+        }
+
+        return tags;
     }
 
     private void reportCrash(String match, Exception e) {
