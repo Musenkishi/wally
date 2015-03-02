@@ -42,7 +42,7 @@ import com.musenkishi.wally.R;
 import com.musenkishi.wally.activities.MainActivity;
 import com.musenkishi.wally.adapters.RecyclerSavedImagesAdapter;
 import com.musenkishi.wally.base.GridFragment;
-import com.musenkishi.wally.observers.FileChangeReceiver;
+import com.musenkishi.wally.observers.FileReceiver;
 import com.musenkishi.wally.util.SparseBooleanArrayParcelable;
 
 import java.util.ArrayList;
@@ -395,7 +395,7 @@ public class SavedImagesFragment extends GridFragment implements Handler.Callbac
                         }
                         mode.finish();
                         getImages(0, null);
-                        getActivity().sendBroadcast(new Intent(FileChangeReceiver.FILES_CHANGED));
+                        getActivity().sendBroadcast(new Intent(FileReceiver.GET_FILES));
                     }
                 });
                 materialDialogFragment.setNegativeButton(R.string.dialog_delete_negative, new DialogInterface.OnClickListener() {

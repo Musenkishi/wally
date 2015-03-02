@@ -42,7 +42,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.musenkishi.wally.R;
 import com.musenkishi.wally.anim.interpolator.LinearOutSlowInInterpolator;
-import com.musenkishi.wally.observers.FileChangeReceiver;
+import com.musenkishi.wally.observers.FileReceiver;
 
 import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
@@ -436,7 +436,7 @@ public class ImageZoomFragment extends DialogFragment {
         getActivity().getContentResolver().delete(contentUri, null, null);
 
         //Not for SavedImagesFragment, but for the others to know that they should update their content (heart/unheart tiles)
-        getActivity().sendBroadcast(new Intent(FileChangeReceiver.FILES_CHANGED));
+        getActivity().sendBroadcast(new Intent(FileReceiver.GET_FILES));
 
         dismiss();
     }
