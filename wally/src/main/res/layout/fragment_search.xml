@@ -76,7 +76,7 @@
                     android:id="@+id/quick_return_edittext"
                     android:layout_weight="1"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:imeOptions="actionSearch"
                     android:inputType="text"
                     android:cursorVisible="false"
