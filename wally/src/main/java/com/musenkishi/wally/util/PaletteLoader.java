@@ -45,7 +45,7 @@ import java.util.concurrent.Executors;
 /**
  * A class that can apply colors to Views lazily.
  * Can be used in ListViews.
- *
+ * <p/>
  * Created by Freddie (Musenkishi) Lust-Hed on 2014-10-21.
  */
 public class PaletteLoader {
@@ -62,16 +62,16 @@ public class PaletteLoader {
     private static Handler uiHandler;
     private static Handler backgroundHandler;
 
-    private static Map<String, Palette> colorSchemeCache;
+    private static Map<String, Palette> paletteCache;
     private static ExecutorService executorService = Executors.newFixedThreadPool(MAX_CONCURRENT_THREADS);
 
-    private PaletteLoader(){
+    private PaletteLoader() {
         //Don't use
     }
 
     public static PaletteBuilder with(Context context, String id) {
-        if (colorSchemeCache == null){
-            colorSchemeCache = Collections.synchronizedMap(
+        if (paletteCache == null) {
+            paletteCache = Collections.synchronizedMap(
                     new LRUMap<String, Palette>(MAX_ITEMS_IN_CACHE)
             );
         }
@@ -99,7 +99,7 @@ public class PaletteLoader {
                     if (pair != null && !pair.first.isRecycled()) {
                         Palette palette = Palette.generate(pair.first);
 
-                        colorSchemeCache.put(pair.second.getId(), palette);
+                        paletteCache.put(pair.second.getId(), palette);
 
                         Message uiMessage = uiHandler.obtainMessage();
                         uiMessage.what = MSG_DISPLAY_PALETTE;
@@ -114,6 +114,7 @@ public class PaletteLoader {
                     Pair<Palette, PaletteTarget> pairDisplay = (Pair<Palette, PaletteTarget>) message.obj;
                     boolean fromCache = message.arg1 == TRUE;
                     applyColorToView(pairDisplay.second, pairDisplay.first, fromCache);
+                    callListener(pairDisplay.first, pairDisplay.second.getListener());
 
                     break;
 
@@ -131,6 +132,7 @@ public class PaletteLoader {
         private int fallbackColor = Color.TRANSPARENT;
         private PaletteRequest paletteRequest = new PaletteRequest(PaletteRequest.SwatchType.REGULAR_VIBRANT, PaletteRequest.SwatchColor.BACKGROUND);
         private Palette palette;
+        private OnPaletteRenderedListener onPaletteRenderedListener;
 
         public PaletteBuilder(String id) {
             this.id = id;
@@ -161,15 +163,22 @@ public class PaletteLoader {
             return this;
         }
 
+        public PaletteBuilder setListener(OnPaletteRenderedListener onPaletteRenderedListener) {
+            this.onPaletteRenderedListener = onPaletteRenderedListener;
+            return this;
+        }
+
         public void into(View view) {
-            final PaletteTarget paletteTarget = new PaletteTarget(id, paletteRequest, view, maskDrawable, fallbackColor);
+            final PaletteTarget paletteTarget = new PaletteTarget(id, paletteRequest, view, maskDrawable, fallbackColor, onPaletteRenderedListener);
             if (palette != null) {
-                colorSchemeCache.put(paletteTarget.getId(), palette);
+                paletteCache.put(paletteTarget.getId(), palette);
                 applyColorToView(paletteTarget, palette, false);
+                callListener(palette, onPaletteRenderedListener);
             } else {
-                if (colorSchemeCache.get(id) != null) {
-                    Palette palette = colorSchemeCache.get(id);
+                if (paletteCache.get(id) != null) {
+                    Palette palette = paletteCache.get(id);
                     applyColorToView(paletteTarget, palette, true);
+                    callListener(palette, onPaletteRenderedListener);
                 } else {
                     if (Build.VERSION.SDK_INT >= 21) {
                         executorService.submit(new PaletteRenderer(bitmap, paletteTarget));
@@ -182,6 +191,7 @@ public class PaletteLoader {
                 }
             }
         }
+
     }
 
     private static void applyColorToView(PaletteTarget target, Palette palette, boolean fromCache) {
@@ -197,20 +207,35 @@ public class PaletteLoader {
         }
         if (fromCache) {
             if (target.getView() instanceof ImageView && target.shouldMaskDrawable()) {
-                ((ImageView) target.getView()).getDrawable().mutate()
-                        .setColorFilter(color, PorterDuff.Mode.MULTIPLY);
+                ImageView imageView = ((ImageView) target.getView());
+                if (imageView.getDrawable() != null) {
+                    imageView.getDrawable().mutate()
+                            .setColorFilter(color, PorterDuff.Mode.MULTIPLY);
+                } else if (imageView.getBackground() != null) {
+                    imageView.getBackground().mutate()
+                            .setColorFilter(color, PorterDuff.Mode.MULTIPLY);
+                }
             } else {
                 target.getView().setBackgroundColor(color);
             }
         } else {
             if (target.getView() instanceof ImageView && target.shouldMaskDrawable()) {
+
+                final ImageView imageView = ((ImageView) target.getView());
+
                 Integer colorFrom;
                 ValueAnimator.AnimatorUpdateListener imageAnimatorUpdateListener = new ValueAnimator.AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                        ((ImageView) target.getView()).getDrawable().mutate()
-                                .setColorFilter((Integer) valueAnimator
-                                        .getAnimatedValue(), PorterDuff.Mode.MULTIPLY);
+                        if (imageView.getDrawable() != null) {
+                            imageView.getDrawable().mutate()
+                                    .setColorFilter((Integer) valueAnimator
+                                            .getAnimatedValue(), PorterDuff.Mode.MULTIPLY);
+                        } else if (imageView.getBackground() != null) {
+                            imageView.getBackground().mutate()
+                                    .setColorFilter((Integer) valueAnimator
+                                            .getAnimatedValue(), PorterDuff.Mode.MULTIPLY);
+                        }
                     }
                 };
                 ValueAnimator.AnimatorUpdateListener animatorUpdateListener;
@@ -269,7 +294,7 @@ public class PaletteLoader {
     /**
      * Is it null? Is that null? What about that one? Is that null too? What about this one?
      * And this one? Is this null? Is null even null? How can null be real if our eyes aren't real?
-     *
+     * <p/>
      * <p>Checks whether the view has been recycled or not.</p>
      *
      * @param target A {@link com.musenkishi.wally.util.PaletteLoader.PaletteTarget} to check
@@ -307,7 +332,7 @@ public class PaletteLoader {
         public void run() {
             if (bitmap != null && !bitmap.isRecycled()) {
                 Palette colorScheme = Palette.generate(bitmap);
-                colorSchemeCache.put(paletteTarget.getId(), colorScheme);
+                paletteCache.put(paletteTarget.getId(), colorScheme);
 
                 PalettePresenter palettePresenter = new PalettePresenter(
                         paletteTarget,
@@ -334,6 +359,7 @@ public class PaletteLoader {
         @Override
         public void run() {
             applyColorToView(paletteTarget, palette, fromCache);
+            callListener(palette, paletteTarget.getListener());
         }
     }
 
@@ -342,13 +368,15 @@ public class PaletteLoader {
         private PaletteRequest paletteRequest;
         private View view;
         private boolean maskDrawable;
+        private OnPaletteRenderedListener onPaletteRenderedListener;
 
-        private PaletteTarget(String id, PaletteRequest paletteRequest, View view, boolean maskDrawable, int fallbackColor) {
+        private PaletteTarget(String id, PaletteRequest paletteRequest, View view, boolean maskDrawable, int fallbackColor, OnPaletteRenderedListener onPaletteRenderedListener) {
             this.id = id;
             this.paletteRequest = paletteRequest;
             this.view = view;
             this.view.setTag(new PaletteTag(this.id, fallbackColor));
             this.maskDrawable = maskDrawable;
+            this.onPaletteRenderedListener = onPaletteRenderedListener;
         }
 
         public String getId() {
@@ -365,6 +393,10 @@ public class PaletteLoader {
 
         public boolean shouldMaskDrawable() {
             return maskDrawable;
+        }
+
+        public OnPaletteRenderedListener getListener() {
+            return onPaletteRenderedListener;
         }
     }
 
@@ -395,8 +427,36 @@ public class PaletteLoader {
     }
 
     public static class NoPaletteTagFoundException extends NullPointerException {
-        public NoPaletteTagFoundException() { super(); }
-        public NoPaletteTagFoundException(String message) { super(message); }
+        public NoPaletteTagFoundException() {
+            super();
+        }
+
+        public NoPaletteTagFoundException(String message) {
+            super(message);
+        }
     }
+
+    public interface OnPaletteRenderedListener {
+        abstract void onRendered(Palette palette);
+    }
+
+    private static void callListener(Palette palette, OnPaletteRenderedListener onPaletteRenderedListener) {
+        if (onPaletteRenderedListener != null) {
+            onPaletteRenderedListener.onRendered(palette);
+        }
+    }
+
+//    /**
+//     * Will return a {@link android.support.v7.graphics.Palette} if it's available in the cache
+//     * @param id The URL or ID that was used to render the {@link android.support.v7.graphics.Palette}.
+//     * @return The desired {@link android.support.v7.graphics.Palette} if available, otherwise null.
+//     */
+//    public static Palette getPaletteFromCache(String id) {
+//        if (paletteCache.containsKey(id)){
+//            return paletteCache.get(id);
+//        } else {
+//            return null;
+//        }
+//    }
 
 }
