@@ -85,7 +85,7 @@ public abstract class BaseActivity extends ActionBarActivity {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             String title = getResources().getString(R.string.app_name);
-            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_source);
+            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_recent);
             int primaryColor = getResources().getColor(R.color.Actionbar_TopList_Background);
             setTaskDescription(new ActivityManager.TaskDescription(title, bitmap, primaryColor));
         }
