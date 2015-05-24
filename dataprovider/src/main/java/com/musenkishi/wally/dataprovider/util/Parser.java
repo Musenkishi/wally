@@ -57,7 +57,7 @@ public class Parser {
             Element wrapperElement = (Element) thumbIterator.next();
 
             //Get the resolution
-            Element resElement = wrapperElement.getElementsByClass("wall-info").first();
+            Element resElement = wrapperElement.getElementsByClass("thumb-info").first();
             String resolution = resElement.select("span.wall-res").text();
 
             //Get the image with link
@@ -98,12 +98,12 @@ public class Parser {
             reportCrash(categoryMatch, e);
         }
 
-        Element sfwElement = document.select("fieldset.framed input").first();
+        Element sfwElement = document.select("div.sidebar-section fieldset").first();
         String rating = "Unknown";
         if (sfwElement != null) {
-            if (sfwElement.toString().contains("checked")){
+            if (sfwElement.toString().contains("purity sfw")){
                 rating = "SFW";
-            } else {
+            } else if (sfwElement.toString().contains("purity sketchy")){
                 rating = "Sketchy";
             }
         }
