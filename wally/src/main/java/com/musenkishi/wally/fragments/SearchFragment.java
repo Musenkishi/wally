@@ -60,6 +60,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable;
+import com.musenkishi.paletteloader.PaletteRequest;
 import com.musenkishi.wally.R;
 import com.musenkishi.wally.activities.ImageDetailsActivity;
 import com.musenkishi.wally.activities.MainActivity;
@@ -77,7 +78,6 @@ import com.musenkishi.wally.models.ImagePage;
 import com.musenkishi.wally.notification.NotificationProvider;
 import com.musenkishi.wally.observers.FileReceiver;
 import com.musenkishi.wally.observers.FiltersChangeReceiver;
-import com.musenkishi.wally.util.PaletteRequest;
 
 import net.margaritov.preference.colorpicker.dialog.ColorPickerDialogFragment;
 

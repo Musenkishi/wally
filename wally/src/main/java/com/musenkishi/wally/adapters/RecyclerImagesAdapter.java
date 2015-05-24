@@ -36,11 +36,11 @@ import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.musenkishi.paletteloader.PaletteLoader;
+import com.musenkishi.paletteloader.PaletteRequest;
 import com.musenkishi.wally.R;
 import com.musenkishi.wally.base.WallyApplication;
 import com.musenkishi.wally.models.Image;
-import com.musenkishi.wally.util.PaletteLoader;
-import com.musenkishi.wally.util.PaletteRequest;
 
 import java.util.ArrayList;
 import java.util.HashMap;

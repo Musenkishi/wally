@@ -56,6 +56,8 @@ import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.musenkishi.paletteloader.PaletteLoader;
+import com.musenkishi.paletteloader.PaletteRequest;
 import com.musenkishi.wally.R;
 import com.musenkishi.wally.anim.interpolator.EaseInOutBezierInterpolator;
 import com.musenkishi.wally.base.BaseActivity;
@@ -72,8 +74,6 @@ import com.musenkishi.wally.models.Size;
 import com.musenkishi.wally.models.Tag;
 import com.musenkishi.wally.observers.FileReceiver;
 import com.musenkishi.wally.util.Blur;
-import com.musenkishi.wally.util.PaletteLoader;
-import com.musenkishi.wally.util.PaletteRequest;
 import com.musenkishi.wally.views.FlowLayout;
 import com.musenkishi.wally.views.ObservableScrollView;
 
